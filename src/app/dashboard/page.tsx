@@ -1485,12 +1485,13 @@ function ExpressPageContent() {
     cargarMaestros();
   }, []);
 
-  // Borrar automáticamente los mensajes informativos/éxito tras 5 segundos (mantener los de error visibles)
+  // Borrar automáticamente los mensajes tras unos segundos (5s info/éxito, 8s error)
   useEffect(() => {
-    if (mensajeEstado && mensajeEstado.tipo !== "error") {
+    if (mensajeEstado) {
+      const delay = mensajeEstado.tipo === "error" ? 8000 : 5000;
       const timer = setTimeout(() => {
         setMensajeEstado(null);
-      }, 5000);
+      }, delay);
       return () => clearTimeout(timer);
     }
   }, [mensajeEstado]);
