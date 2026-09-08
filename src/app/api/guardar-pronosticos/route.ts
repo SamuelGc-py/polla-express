@@ -164,7 +164,7 @@ export async function POST(req: Request) {
     });
 
     const mensajeBase = "¡Tus pronósticos se han guardado exitosamente!";
-    const huboRechazos = prediccionInicialRechazada || partidosRechazados.length > 0;
+    const huboRechazos = partidosRechazados.length > 0;
 
     return NextResponse.json({
       exito: true,
