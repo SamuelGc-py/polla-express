@@ -4033,25 +4033,7 @@ function ExpressPageContent() {
           </header>
 
 
-          {/* MENSAJE DE ESTADO DE OPERACIÓN */}
-          {mensajeEstado && (
-            <div
-              style={{
-                marginBottom: 24,
-                padding: "16px 20px",
-                borderRadius: 12,
-                display: "flex",
-                alignItems: "flex-start",
-                gap: 12,
-                background: mensajeEstado.tipo === "exito" ? "var(--cancha-suave)" : "var(--rojo-suave)",
-                color: mensajeEstado.tipo === "exito" ? "var(--cancha)" : "var(--rojo)",
-                border: `1px solid ${mensajeEstado.tipo === "exito" ? "var(--cancha-borde)" : "rgba(255,92,92,0.4)"}`,
-              }}
-            >
-              {mensajeEstado.tipo === "exito" ? <CheckCircle2 size={24} style={{ flexShrink: 0 }} /> : <AlertTriangle size={24} style={{ flexShrink: 0 }} />}
-              <div style={{ fontWeight: 600, fontSize: "0.95rem" }}>{mensajeEstado.texto}</div>
-            </div>
-          )}
+
 
           {/* TAB 0: PANTALLA DE INICIO Y BIENVENIDA (con sidebar de navegación) */}
           {tabActiva === "inicio" && (
