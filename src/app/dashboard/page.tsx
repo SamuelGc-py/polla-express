@@ -2737,7 +2737,6 @@ function ExpressPageContent() {
                       const mins = Math.floor((msFaltantes % (1000 * 60 * 60)) / (1000 * 60));
                       conteoFaltante = `${days > 0 ? days + "d " : ""}${hours}h ${mins}m`;
                     }
-                    if (partido.jornada === 1) return null;
                     return (
                       <div key={partido.id} style={{
                         background: "rgba(26, 31, 38, 0.6)",
