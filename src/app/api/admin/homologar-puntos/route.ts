@@ -205,7 +205,15 @@ export async function POST(req: Request) {
 
       // --- FASE B: ajustes contra la tabla maestra ----------------------------
       // Se borran TODOS los ajustes previos (partido_id null) y se recalculan.
-      await tx.puntaje.deleteMany({ where: { partido_id: null } });
+      // Solo sus propias categorías: los puntajes sin partido de otras categorías
+      // (p. ej. clasificados_cuadrangulares, de /api/admin/liquidar-clasificados)
+      // no son ajustes de homologación y no se pueden borrar desde aquí.
+      await tx.puntaje.deleteMany({
+        where: {
+          partido_id: null,
+          categoria: { in: Object.values(CATEGORIA_POR_CLAVE) },
+        },
+      });
 
       const filasReales = await tx.puntaje.findMany({ where: { partido_id: { not: null } } });
       const reales = resumirPorUsuario(filasReales);
@@ -338,7 +346,10 @@ export async function POST(req: Request) {
   }
 }
 
-/** Suma los puntajes por usuario y categoría. */
+/**
+ * Suma los puntajes por usuario en las tres categorías de partido. El total es el de
+ * esas tres (lo que mide la tabla maestra); otras categorías no entran.
+ */
 function resumirPorUsuario(filas: { usuario_id: number; categoria: string; puntos_obtenidos: number }[]) {
   const mapa = new Map<number, { exacto: number; ganador: number; goleador: number; total: number }>();
   for (const f of filas) {
@@ -346,6 +357,7 @@ function resumirPorUsuario(filas: { usuario_id: number; categoria: string; punto
     if (f.categoria === "resultado_exacto") acc.exacto += f.puntos_obtenidos;
     else if (f.categoria === "ganador_partido") acc.ganador += f.puntos_obtenidos;
     else if (f.categoria === "goleador") acc.goleador += f.puntos_obtenidos;
+    else continue;
     acc.total += f.puntos_obtenidos;
     mapa.set(f.usuario_id, acc);
   }
