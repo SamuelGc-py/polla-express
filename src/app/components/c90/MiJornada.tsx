@@ -16,6 +16,7 @@ import Leaderboard from "./Leaderboard";
 import { rankingGeneral, FilaRanking, ganadorUltimaFechaCerrada } from "./ranking";
 import { textoProvisional, type Provisional } from "./provisional";
 import { horaCierre, primerNombre, tiempoRestante, unirNombres } from "./formato";
+import { formatearJornada } from "@/lib/formatoJornada";
 
 interface PartidoJornada {
   id: number;
@@ -170,8 +171,8 @@ export default function MiJornada({
             <span className={s.avisoTitulo} style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <Trophy size={18} style={{ color: "var(--color-amarillo-energia)" }} aria-hidden="true" />
               {soyGanador
-                ? `¡Ganaste la Fecha ${ganadorFecha.fecha}!`
-                : `${ganadorFecha.nombres.length > 1 ? "Ganadores" : "Ganador"} de la Fecha ${ganadorFecha.fecha}: ${unirNombres(ganadorFecha.nombres)}`}
+                ? `¡Ganaste ${formatearJornada(ganadorFecha.fecha)}!`
+                : `${ganadorFecha.nombres.length > 1 ? "Ganadores" : "Ganador"} de ${formatearJornada(ganadorFecha.fecha)}: ${unirNombres(ganadorFecha.nombres)}`}
             </span>
             <span className="caption">
               {ganadorFecha.nombres.length > 1 ? "Empataron" : "Sumó"} <span className="num" style={{ color: "var(--state-ok)" }}>{ganadorFecha.pts} pts</span> en la fecha.

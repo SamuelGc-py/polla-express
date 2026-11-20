@@ -6,6 +6,7 @@ import DateNavigator from "./DateNavigator";
 import { unirNombres } from "./formato";
 import { FilaConMovimiento, FilaRanking, fechasConPuntos, ganadorDeFecha, rankingDeFecha, rankingGeneral } from "./ranking";
 import { Trophy } from "lucide-react";
+import { formatearJornada } from "@/lib/formatoJornada";
 
 const CATEGORIAS: { k: keyof FilaRanking; t: string }[] = [
   { k: "pts_resultado_exacto", t: "Exacto" },
@@ -80,12 +81,12 @@ export default function Leaderboard({ tabla, puntajes, partidos, usuarioId, comp
 
       {!compacto && modo === "fecha" && fechaSel != null && (() => {
         const g = ganadorDeFecha(tabla, puntajes, partidos, fechaSel);
-        if (!g) return <p className="caption" style={{ margin: 0 }}>Nadie ha sumado todavía en la Fecha {fechaSel}.</p>;
+        if (!g) return <p className="caption" style={{ margin: 0 }}>Nadie ha sumado todavía en {formatearJornada(fechaSel)}.</p>;
         return (
           <div style={{ display: "flex", alignItems: "center", gap: "var(--s-3)", padding: "var(--s-3) var(--s-4)", background: "var(--surface)", border: "1px solid var(--line)", borderLeft: "3px solid var(--color-verde-club)", borderRadius: "var(--r-ctl)" }}>
             <Trophy size={18} style={{ color: "var(--color-amarillo-energia)", flexShrink: 0 }} aria-hidden="true" />
             <span style={{ fontWeight: 600 }}>
-              {g.cerrada ? (g.nombres.length > 1 ? "Ganadores" : "Ganador") : "Va ganando"} de la Fecha {g.fecha}: {unirNombres(g.nombres)}{" "}
+              {g.cerrada ? (g.nombres.length > 1 ? "Ganadores" : "Ganador") : "Va ganando"} de {formatearJornada(g.fecha)}: {unirNombres(g.nombres)}{" "}
               <span className="num" style={{ color: "var(--state-ok)" }}>{g.pts} pts</span>
               {!g.cerrada && <span className="caption"> · fecha en curso</span>}
             </span>

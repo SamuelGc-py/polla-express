@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requerirAdmin } from "@/lib/auth";
 import ExcelJS from "exceljs";
+import { formatearJornada } from "@/lib/formatoJornada";
 
 export const dynamic = "force-dynamic";
 
@@ -139,7 +140,7 @@ export async function GET(req: Request) {
 
     // Inicializar libro y hoja de cálculo
     const workbook = new ExcelJS.Workbook();
-    const sheetName = jornada ? `Fecha ${jornada}` : "Pronósticos Partidos";
+    const sheetName = jornada ? formatearJornada(Number(jornada), true) : "Pronósticos Partidos";
     const worksheet = workbook.addWorksheet(sheetName);
 
     // Configurar columnas y anchos (basado en HTML)
@@ -219,7 +220,11 @@ export async function GET(req: Request) {
 
     // Generar buffer
     const buffer = await workbook.xlsx.writeBuffer();
-    const filename = jornada ? `Pronosticos_Partidos_Fecha_${jornada}.xlsx` : `Pronosticos_Partidos_Todos.xlsx`;
+    const filename = jornada
+      ? Number(jornada) >= 20
+        ? `Pronosticos_Cuadrangulares_F${Number(jornada) - 19}.xlsx`
+        : `Pronosticos_Partidos_Fecha_${jornada}.xlsx`
+      : `Pronosticos_Partidos_Todos.xlsx`;
 
     return new NextResponse(buffer, {
       headers: {

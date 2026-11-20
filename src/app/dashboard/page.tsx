@@ -25,6 +25,7 @@ import DateNavigator from "../components/c90/DateNavigator";
 import EstadisticasView from "../components/c90/EstadisticasView";
 import { Logotipo } from "../components/c90/Brand";
 import { puntosProvisionales, textoProvisional, type Provisional } from "../components/c90/provisional";
+import { formatearJornada } from "@/lib/formatoJornada";
 
 // Nombre visible de cada pestaña en la barra "← Inicio"
 const TITULOS_PESTANA: Record<string, string> = {
@@ -61,6 +62,7 @@ interface Partido {
   fase: string;
   jornada: number;
   jornada_original?: number | null;
+  grupo?: string | null;
   equipo_local: Equipo;
   equipo_visitante: Equipo;
   fecha_hora_partido: string;
@@ -1832,12 +1834,15 @@ function ExpressPageContent() {
         etiquetaAccion={estaCerrado ? "Ver" : "Pronosticar"}
         estado={
           <>
+            {partido.fase === "fase_2" && partido.grupo ? (
+              <span className="badge badge-info" style={{ fontWeight: 800 }}>Grupo {partido.grupo}</span>
+            ) : null}
             {esAplazado ? (
               <span className="badge badge-warn">Aplazado</span>
             ) : jornadaOrigen < fechaParticipante ? (
-              <span className="badge badge-info">Fecha {jornadaOrigen}</span>
+              <span className="badge badge-info">{formatearJornada(jornadaOrigen, true)}</span>
             ) : jornadaOrigen > fechaParticipante ? (
-              <span className="badge badge-info">Adelantado · F{jornadaOrigen}</span>
+              <span className="badge badge-info">Adelantado · {formatearJornada(jornadaOrigen, true)}</span>
             ) : null}
             {tienePronostico ? (
               <span className="badge badge-ok">
@@ -2502,7 +2507,7 @@ function ExpressPageContent() {
                 {fechaAdmin !== 0 && (
                   <div className="admin-sidebar-fecha" style={{ marginTop: 10, padding: "12px 14px", borderRadius: 14, background: "rgba(4, 6, 10, 0.25)", border: "1px dashed rgba(255,255,255,0.1)" }}>
                     <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.5px" }}>Fecha activa</div>
-                    <div style={{ fontSize: "1rem", color: "#438AFF", fontWeight: 900 }}>Fecha {fechaAdmin}</div>
+                    <div style={{ fontSize: "1rem", color: "#438AFF", fontWeight: 900 }}>{formatearJornada(fechaAdmin)}</div>
                   </div>
                 )}
               </div>
@@ -2565,7 +2570,7 @@ function ExpressPageContent() {
                             transition: "all 0.25s ease",
                           }}
                         >
-                          Fecha {f}
+                          {formatearJornada(f, true)}
                         </button>
                       ))}
                     </div>
@@ -3180,7 +3185,7 @@ function ExpressPageContent() {
                           </div>
                         ) : partidosAdminFiltrados.length === 0 ? (
                           <div style={{ padding: 40, textAlign: "center", background: "rgba(26, 31, 38, 0.6)", borderRadius: 24, color: "var(--text-muted)" }}>
-                            {`No hay partidos programados para la Fecha ${fechaAdmin}.`}
+                            {`No hay partidos programados para ${formatearJornada(fechaAdmin)}.`}
                           </div>
                         ) : (
                           <>
@@ -3396,7 +3401,7 @@ function ExpressPageContent() {
                                     transition: "all 0.3s ease",
                                   }}
                                 >
-                                  Fecha {f}
+                                  {formatearJornada(f, true)}
                                 </button>
                               ))}
 
@@ -3421,7 +3426,7 @@ function ExpressPageContent() {
                                   transition: "all 0.3s"
                                 }}
                               >
-                                <Download size={15} /> Excel F{fechaAdmin || "-"}
+                                <Download size={15} /> Excel {fechaAdmin >= 20 ? `C${fechaAdmin - 19}` : `F${fechaAdmin || "-"}`}
                               </button>
                             </div>
                           </div>
@@ -3434,7 +3439,7 @@ function ExpressPageContent() {
                           </div>
                         ) : partidosAdminFiltrados.length === 0 ? (
                           <div style={{ padding: 40, textAlign: "center", background: "rgba(26, 31, 38, 0.6)", borderRadius: 24, color: "var(--text-muted)" }}>
-                            {`No hay partidos programados para la Fecha ${fechaAdmin}.`}
+                            {`No hay partidos programados para ${formatearJornada(fechaAdmin)}.`}
                           </div>
                         ) : (
                           <>
@@ -3468,7 +3473,7 @@ function ExpressPageContent() {
                           </div>
                         ) : partidosAdminFiltrados.length === 0 ? (
                           <div style={{ padding: 40, textAlign: "center", background: "rgba(26, 31, 38, 0.6)", borderRadius: 24, color: "var(--text-muted)" }}>
-                            {`No hay partidos programados para la Fecha ${fechaAdmin}.`}
+                            {`No hay partidos programados para ${formatearJornada(fechaAdmin)}.`}
                           </div>
                         ) : (
                           <>
@@ -3847,7 +3852,7 @@ function ExpressPageContent() {
               <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: "var(--s-3)" }}>
                 <div>
                   <span className="eyebrow">Liga BetPlay 2026-II</span>
-                  <h2 className="titulo-seccion" style={{ marginTop: 4 }}>Pronósticos · Fecha {fechaParticipante}</h2>
+                  <h2 className="titulo-seccion" style={{ marginTop: 4 }}>Pronósticos · {formatearJornada(fechaParticipante)}</h2>
                 </div>
                 <span className="caption">Marcador exacto 5 · Ganador o empate 3 · Goleador 2 · Cierre 30 min antes</span>
               </div>
@@ -4373,7 +4378,7 @@ function ExpressPageContent() {
                           valor={fechaActivaVisual}
                           opciones={listaFechas}
                           onCambio={(f) => setFechaPronosticosTodos(f)}
-                          etiqueta={(f) => (f === fechaParticipante ? `Fecha ${f} · actual` : `Fecha ${f}`)}
+                          etiqueta={(f) => (f === fechaParticipante ? `${formatearJornada(f, true)} · actual` : formatearJornada(f, true))}
                         />
                         <div className="tabs" role="tablist" aria-label="Filtrar partidos">
                           {([

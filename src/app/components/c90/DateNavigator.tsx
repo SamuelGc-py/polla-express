@@ -9,12 +9,13 @@
 
 import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { formatearJornada } from "@/lib/formatoJornada";
 
 export default function DateNavigator({
   valor,
   opciones,
   onCambio,
-  etiqueta = (n: number) => `Fecha ${n}`,
+  etiqueta = (n: number) => formatearJornada(n, true),
 }: {
   valor: number;
   /** Fechas disponibles, en orden. */
