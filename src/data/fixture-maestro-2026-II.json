@@ -794,6 +794,70 @@
    "visitante": "Independiente Santa Fe",
    "fecha_utc": "2026-12-03T01:30:00Z",
    "con_hora": true
+  },
+  {
+   "numero": 207,
+   "jornada": 24,
+   "local": "Atlético Bucaramanga",
+   "visitante": "Millonarios F.C.",
+   "fecha_utc": "2026-12-05T23:00:00Z",
+   "con_hora": false
+  },
+  {
+   "numero": 208,
+   "jornada": 24,
+   "local": "Deportivo Cali",
+   "visitante": "América de Cali",
+   "fecha_utc": "2026-12-06T01:00:00Z",
+   "con_hora": false
+  },
+  {
+   "numero": 209,
+   "jornada": 24,
+   "local": "Once Caldas DAF",
+   "visitante": "Independiente Santa Fe",
+   "fecha_utc": "2026-12-06T23:00:00Z",
+   "con_hora": false
+  },
+  {
+   "numero": 210,
+   "jornada": 24,
+   "local": "Independiente Medellín",
+   "visitante": "Atlético Nacional",
+   "fecha_utc": "2026-12-07T01:00:00Z",
+   "con_hora": false
+  },
+  {
+   "numero": 211,
+   "jornada": 25,
+   "local": "Millonarios F.C.",
+   "visitante": "Deportivo Cali",
+   "fecha_utc": "2026-12-08T23:00:00Z",
+   "con_hora": false
+  },
+  {
+   "numero": 212,
+   "jornada": 25,
+   "local": "América de Cali",
+   "visitante": "Atlético Bucaramanga",
+   "fecha_utc": "2026-12-09T01:00:00Z",
+   "con_hora": false
+  },
+  {
+   "numero": 213,
+   "jornada": 25,
+   "local": "Independiente Santa Fe",
+   "visitante": "Independiente Medellín",
+   "fecha_utc": "2026-12-09T23:00:00Z",
+   "con_hora": false
+  },
+  {
+   "numero": 214,
+   "jornada": 25,
+   "local": "Atlético Nacional",
+   "visitante": "Once Caldas DAF",
+   "fecha_utc": "2026-12-10T01:00:00Z",
+   "con_hora": false
   }
  ]
 }
